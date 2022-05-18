@@ -14,7 +14,7 @@ import java.util.Scanner;
  
 
 public class HomePage {
-     
+    customerView view = new customerView();
     private String statement, user_input;
     
     //To display everything on home page
@@ -46,7 +46,7 @@ public class HomePage {
                     System.out.println("Hey1");
                     break;
             case "B":
-                    System.out.println("Hey2");
+                    view.display();
                     break;
             case "C":
                     System.out.println("Hey3");
