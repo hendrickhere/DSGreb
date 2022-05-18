@@ -8,13 +8,15 @@ package javaapplication4;
  *
  * @author hongjun
  */
-public class JavaApplication4 {
+public class Main {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        "HEELO"
+        HomePage a = new HomePage();
+        a.display();
+        a.input();
     }
     
 }
