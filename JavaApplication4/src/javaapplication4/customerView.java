@@ -18,7 +18,27 @@ public class customerView {
         System.out.println("A - Create customer requests");
         System.out.println("B - Update customer requests");
         
-        String option = scan.nextLine();
+        System.out.print(">> ");
+        String option = scan.next();
+        Outerloop:
+        while(!(option.equals("A")||option.equals("B"))){
+            System.out.println("The user input is case-sensitive, please enter a valid alphabet");
+            System.out.print(">> ");
+            option = s.next();
+            if(option.equals("A")||option.equals("B")) {
+                break Outerloop;
+            }
+        }
+
+        switch(option){
+            case "A":
+                    System.out.println("Hey1");
+                    break;
+            case "B":
+                    view.display();
+                    break;
+            default:
+        }
     }
     
 }
