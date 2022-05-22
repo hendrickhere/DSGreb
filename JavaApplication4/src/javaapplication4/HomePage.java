@@ -14,20 +14,28 @@ import java.util.Scanner;
  
 
 public class HomePage {
-    customerView view = new customerView();
-    private String statement, user_input;
+    
+    private String statement, user_input,loginTime;
+
+    
+
+    
+    public String getTime() {
+        return loginTime;
+    }
     
     //To display everything on home page
     public void display() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
-        LocalDateTime current = LocalDateTime.now();  
-        statement = "Welcome to Greb Application!\nOptions : \n(Current time : "+dtf.format(current)+")"
+        LocalDateTime current = LocalDateTime.now(); 
+        loginTime  = dtf.format(current);
+        statement = "\nWelcome to Greb Application!\nOptions : \n(Current time : "+loginTime+")"
                     + "\nA - View System Dashboard\nB - Enter Customer View\nC - Add / Remove Driver\n";
         System.out.println(statement);
     }
     
     //Identify what is the input and execute the function of the user input
-    public void input() {
+    public String input() {
         Scanner s = new Scanner(System.in);
         System.out.print(">> ");
         user_input = s.next();
@@ -41,18 +49,7 @@ public class HomePage {
             }
         }
 
-        switch(user_input){
-            case "A":
-                    System.out.println("Hey1");
-                    break;
-            case "B":
-                    view.display();
-                    break;
-            case "C":
-                    System.out.println("Hey3");
-                    break;
-            default:
-        }
+       return user_input;
 
     }
 }

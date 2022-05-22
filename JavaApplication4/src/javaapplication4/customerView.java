@@ -11,14 +11,33 @@ import java.util.Scanner;
  * @author hongjun
  */
 public class customerView {
+    
     Scanner scan = new Scanner(System.in);
-    public void display(){
+    
+
+    
+    
+    public String display(){
+        String option;
         System.out.println("You are in customer view now (Enter"+" exit "+ "to go back to homepage): ");
         System.out.println("Option: ");
         System.out.println("A - Create customer requests");
         System.out.println("B - Update customer requests");
-        
-        String option = scan.nextLine();
+        option = scan.nextLine();
+        return option;
+         
     }
+    
+    
+   
+
+    
+
+
+    
+    
+    
+    
+    
     
 }
