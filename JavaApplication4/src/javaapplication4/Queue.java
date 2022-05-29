@@ -60,6 +60,10 @@ public class Queue<E> {
         list.remove(i);
     }
     
+    public int getIndex(E e){
+        return list.indexOf(e);
+    }
+    
     
     @Override
     public String toString(){

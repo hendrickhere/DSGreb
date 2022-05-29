@@ -17,22 +17,35 @@ public class queueCustomer {
     Queue<Integer> qCapacity = new Queue<>();
     Queue<String> qStartingPoint = new Queue<>();
     Queue<String> qDestination = new Queue<>();
-    
+    String[] status = {"pending","waiting","picked up","reached"};
     
     public void add(String[] a){
         
         qName.enqueue(a[0]);
         qTime.enqueue(a[1]);
+       
         qCapacity.enqueue(Integer.parseInt(a[2]));
-        qStartingPoint.enqueue(a[3]+" "+ a[4]);
-        qDestination.enqueue(a[5] + " "+ a[6]);
-            
+        qStartingPoint.enqueue(a[3]);
+        qDestination.enqueue(a[4]);
+        addAdditional();
         
     }
     
+    public void addAdditional(){
+         qStatus.enqueue(status[0]);
+    }
+    
+    public void changeStatus(String customerName, String updatedStatus){
+        if(qName.contains(customerName)){
+            int index = qName.getIndex(customerName);
+            qStatus.set(index, updatedStatus);
+        }
+    }
+    
+    
     public void display(){
         for(int i = 0 ; i < qName.getSize() ; i++){
-            System.out.printf("%8s %18s %15s %25s %25s %20s ",qName.getElement(i),"status ",qTime.getElement(i), qCapacity.getElement(i), qStartingPoint.getElement(i), qDestination.getElement(i));
+            System.out.printf("%8s %18s %15s %25d %20s %20s \n",qName.getElement(i), qStatus.getElement(i),qTime.getElement(i), qCapacity.getElement(i), qStartingPoint.getElement(i), qDestination.getElement(i));
             
         }
         

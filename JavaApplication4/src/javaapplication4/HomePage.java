@@ -26,7 +26,7 @@ public class HomePage {
     
     //To display everything on home page
     public void display() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");  
         LocalDateTime current = LocalDateTime.now(); 
         loginTime  = dtf.format(current);
         statement = "\nWelcome to Greb Application!\nOptions : \n(Current time : "+loginTime+")"
@@ -40,7 +40,7 @@ public class HomePage {
         System.out.print(">> ");
         user_input = s.next();
         Outerloop:
-        while(!(user_input.equals("A")||user_input.equals("B")||user_input.equals("C")) ){
+        while(!(user_input.equals("A")||user_input.equals("B")||user_input.equals("C"))){
             System.out.println("The user input is case-sensitive, please enter a valid alphabet");
             System.out.print(">> ");
             user_input = s.next();
