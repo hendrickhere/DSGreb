@@ -197,8 +197,7 @@ public class Graph<T extends Comparable<T>,N extends Comparable<N>> {
                         Edge<T,N> currentEdge = sourceVertex.firstEdge;    // store information;
                         Edge<T,N> newEdge = new Edge<>(destinationVertex, w, currentEdge);
                         sourceVertex.firstEdge = newEdge;
-                        sourceVertex.outdeg++;
-                        sourceVertex.indeg++;
+                        sourceVertex.outdeg++;                        
                         destinationVertex.indeg++;
                         return true;
 
@@ -279,7 +278,13 @@ public class Graph<T extends Comparable<T>,N extends Comparable<N>> {
             
             Edge<T,N> currentEdge = temp.firstEdge;
             while(currentEdge != null){
+                if(temp.vertexInfo.compareTo(currentEdge.toVertex.vertexInfo)== 0){
+                    
+                }
+                else{
                 System.out.print("[" + temp.vertexInfo + " to " + currentEdge.toVertex.vertexInfo +" "+ getEdgeWeight(temp.vertexInfo, currentEdge.toVertex.vertexInfo) + " km"+ "]");
+                }
+                
                 currentEdge = currentEdge.nextEdge;
             }
             System.out.println("");

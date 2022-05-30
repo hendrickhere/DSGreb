@@ -48,6 +48,14 @@ public class Main {
         g.addUndirectedEdge("a", "b", 1);
         g.addUndirectedEdge("b", "c", 2);
         
+        // Move to itself (incase driver is at the location of the customer)
+        g.addEdge("a", "a", 0);
+        g.addEdge("b","b",0);
+        g.addEdge("c", "c", 0);
+        
+        
+        
+        
         
         
 
@@ -378,6 +386,9 @@ public class Main {
         
             
     }
+    
+    
+ 
          
 }
 

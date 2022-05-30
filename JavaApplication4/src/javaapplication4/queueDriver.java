@@ -6,7 +6,7 @@ package javaapplication4;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
+
 
 /**
  *
@@ -25,7 +25,7 @@ public class queueDriver {
     Queue<String> qCustomer = new Queue<>();
     String[] status = {"not available","available"};
     
-    int sizeId = 0;
+    
     
     public void add(String[] a){
         
@@ -120,10 +120,10 @@ public class queueDriver {
     }
     
     public void delete(String a){
-        int size = qName.getSize();
-        for(int i = 0 ; i < size ; i++){
+        //int size = qName.getSize();
+        for(int i = 0 ; i < qName.getSize() ; i++){
             if(a.equalsIgnoreCase(qName.getElement(i))){
-                
+         
                 qName.remove(i);
                 //qId.remove(i);
                 qStatus.remove(i);
@@ -131,16 +131,10 @@ public class queueDriver {
                 qLocation.remove(i);
                 qCustomer.remove(i);         
                 qReputation.remove(i);
-                
-               
-                System.out.println("Driver "+ a +" has been removed");
-                
-                
-                
-            }
-            else{
                                 
+                System.out.println("Driver "+ a +" has been removed");        
             }
+            
         }
     }
     

@@ -27,10 +27,10 @@ public class Vertex <T extends Comparable<T>,N extends Comparable<N>> {
     }
 
     public Vertex(T vInfo, Vertex<T, N> next) {    // cannot same name
-        this.vertexInfo = vInfo;
-        this.indeg = 0;
-        this.outdeg = 0;
-        this.nextVertex = next;
-        this.firstEdge = null;
+        vertexInfo = vInfo;
+        indeg = 0;
+        outdeg = 0;
+        nextVertex = next;
+        firstEdge = null;
     }
 }
