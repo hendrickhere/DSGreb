@@ -7,14 +7,9 @@ package javaapplication4;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 /**
  *
@@ -47,6 +42,7 @@ public class Main {
         g.addVertex("c");
         g.addUndirectedEdge("a", "b", 1);
         g.addUndirectedEdge("b", "c", 2);
+        g.addUndirectedEdge("a", "c", 5);
         
         // Move to itself (incase driver is at the location of the customer)
         g.addEdge("a", "a", 0);
@@ -93,7 +89,6 @@ public class Main {
                         System.out.println("===================================================================================================================================");
                         System.out.printf("%10s %15s %30s %15s %20s %20s\n", "Customer","Status","Expected Arrival Time","Capacity","Starting Point","Destination");
                         
-                        //System.out.println("Customer  Status    Expected Arrival Time   Capacity  Starting Point       Destination      " );        //2 ,4 ,3,2,7
                         queueCustomer.display();
                         System.out.println("===================================================================================================================================");
                         
@@ -165,18 +160,11 @@ public class Main {
                              //while(true){
                                  
                                  System.out.println("The request is received, please choose your driver available in your location) ... ");
-                                 System.out.println("\n");
-                                 System.out.println("Drivers Lists (List Last Updated Time : "+ dtf.format(current)+ ")"); 
-                                 System.out.println("(current time : "+ a.getTime()+ ")");
-                                 System.out.println("===================================================================================================================================");
-                                 System.out.printf("%10s %15s %30s %20s \n", "Driver","Capacity","Estimated Arrival Time","Reputation");
-                                
-                                 queueDriver.displayDriverAva();
-                                
-                                 System.out.println("===================================================================================================================================");
-
-                                       
                                  
+                                 //Print out available driver list
+                                 queueDriver.displayDriver(current);
+                                       
+                 
                                  System.out.print("Please choose your driver in your location (Enter \"exit\" to exit): ");
                                  System.out.print(">> ");
                                  String inputDriver = scan.nextLine();

@@ -4,8 +4,11 @@
  */
 package javaapplication4;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 
 /**
@@ -117,6 +120,24 @@ public class queueDriver {
             
         //} 
         
+    }
+    
+    public void displayDriver(LocalDateTime current){
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");  
+        
+        
+        System.out.println("\n");
+        System.out.println("Drivers Lists (List Last Updated Time : "+ dtf.format(current)+ ")"); 
+        System.out.println("(current time : "+ dateFormat.format(date)+ ")");
+        System.out.println("===================================================================================================================================");
+        System.out.printf("%10s %15s %30s %20s \n", "Driver","Capacity","Estimated Arrival Time","Reputation");
+
+        displayDriverAva();
+
+        System.out.println("===================================================================================================================================");
+
     }
     
     public void delete(String a){
