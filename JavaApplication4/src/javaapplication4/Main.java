@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.TimerTask;
 
 /**
  *
@@ -25,7 +26,7 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");  
         LocalDateTime current = LocalDateTime.now(); 
-        Graph<String,Integer> g = new Graph<>();
+        Graph<String,Double> g = new Graph<>();
         
        
         customerView view = new customerView();
@@ -37,17 +38,17 @@ public class Main {
         boolean result = true;
         String inputCustomer = "";
         String[] inputCustomerBreak = null;
-        g.addVertex("a");
-        g.addVertex("b");
-        g.addVertex("c");
-        g.addUndirectedEdge("a", "b", 1);
-        g.addUndirectedEdge("b", "c", 2);
-        g.addUndirectedEdge("a", "c", 5);
-        
-        // Move to itself (incase driver is at the location of the customer)
-        g.addEdge("a", "a", 0);
-        g.addEdge("b","b",0);
-        g.addEdge("c", "c", 0);
+//        g.addVertex("a");
+//        g.addVertex("b");
+//        g.addVertex("c");
+//        g.addUndirectedEdge("a", "b", 1);
+//        g.addUndirectedEdge("b", "c", 2);
+//        g.addUndirectedEdge("a", "c", 5);
+//        
+//        // Move to itself (incase driver is at the location of the customer)
+//        g.addEdge("a", "a", 0);
+//        g.addEdge("b","b",0);
+//        g.addEdge("c", "c", 0);
         
         
         
@@ -62,7 +63,7 @@ public class Main {
 
             switch(a.input()){
                 case "A":
-                         
+                  
                         if(queueCustomer.qName.getSize()> 0){
                             for(int i = 0 ; i< queueDriver.qName.getSize(); i++){
                              Date date = new Date();
@@ -121,8 +122,8 @@ public class Main {
                          else if(choosen.equalsIgnoreCase("a")){
                              
                              System.out.println("Enter the details of the customer you want to create (name  Expected arrival time  capacity  starting point  destination) \n(Enter "+" exit "+"to go back to homepage)");
-                             System.out.println("\nAvailable route : ");
-                             g.printEdges();
+                             //System.out.println("\nAvailable route : ");
+                             //g.printEdges();
                              
                              System.out.print(">> ");
                              inputCustomer = scan.nextLine();
@@ -133,21 +134,39 @@ public class Main {
                              
                              inputCustomerBreak = inputCustomer.split(" ");
                              
-                             if(!(g.hasEdge(inputCustomerBreak[3], inputCustomerBreak[4]))){
-                                 System.out.println("Route not found");
-                                 break;
-                             }
+                             //if(!(g.hasEdge(inputCustomerBreak[3], inputCustomerBreak[4]))){
+                               //  System.out.println("Route not found");
+                                 //break;
+                             //}
                              
                              queueCustomer.add(inputCustomerBreak);
                              
-                             Customer customer = new Customer(inputCustomerBreak[0],inputCustomerBreak[1],Integer.parseInt(inputCustomerBreak[2]),inputCustomerBreak[3],inputCustomerBreak[4]);
+                             String starting = inputCustomerBreak[3]+" "+ inputCustomerBreak[4];
+                             String destination = inputCustomerBreak[5]+" "+ inputCustomerBreak[6];
+                             double startingLa = Double.parseDouble(inputCustomerBreak[3]);
+                             double startingLong = Double.parseDouble(inputCustomerBreak[4]);
+                             double destLa = Double.parseDouble(inputCustomerBreak[5]);
+                             double destLong = Double.parseDouble(inputCustomerBreak[6]);
+                             
+                             g.addVertex(starting);
+                             g.addVertex(destination);
+                             g.addUndirectedEdge(starting, destination, calculateDistance(startingLa,startingLong, destLa, destLong));
+                             
+                             //Customer customer = new Customer(inputCustomerBreak[0],inputCustomerBreak[1],Integer.parseInt(inputCustomerBreak[2]),inputCustomerBreak[3],inputCustomerBreak[4]);
                              String timeNow = dateFormat.format(date);
                              
+                             for(int i = 0  ; i < queueDriver.qName.getSize(); i++){
+                                 String[] array = queueDriver.qLocation.getElement(i).split(" ");
+                                 g.addUndirectedEdge(queueDriver.qLocation.getElement(i), starting,calculateDistance(Double.parseDouble(array[0]), Double.parseDouble(array[1]), startingLa, startingLong));
+                             }
                              
                              
                              for(int i = 0 ; i < queueDriver.qName.getSize() ; i++){
-                                    int weightDriverToSource = g.getEdgeWeight(queueDriver.qLocation.getElement(i), inputCustomerBreak[3]) ;
-                                    int weightSourceToLocation =  g.getEdgeWeight(inputCustomerBreak[3], inputCustomerBreak[4]);
+                                    double weightDriverToSource = g.getEdgeWeight(queueDriver.qLocation.getElement(i), starting) ;
+                                    
+                                    double weightSourceToLocation =  g.getEdgeWeight(starting, destination);
+                                    
+                                    
                                     queueDriver.qArrivalTime.enqueue(queueDriver.arrivalTime(timeNow,weightDriverToSource, weightSourceToLocation));
                                     queueDriver.qPickupTime.enqueue(queueDriver.pickupTime(timeNow, weightDriverToSource));
                                     if(queueDriver.qArrivalTime.getSize()> queueDriver.qName.getSize()){
@@ -277,13 +296,14 @@ public class Main {
                              System.out.println("Enter the details of the driver you want to create (name, capacity, location) : ");
                              String inputDriver = scan.nextLine();
                              String[] inputDriverBreak = inputDriver.split(" ");
-                             if(!(g.hasVertex(inputDriverBreak[2]))){
-                                 System.out.println("Location unavailable");
-                                 break;
-                             }
+                             //if(!(g.hasVertex(inputDriverBreak[2]))){
+                                 //System.out.println("Location unavailable");
+                                 //break;
+                             //}
                              Driver driver = new Driver(inputDriverBreak[0],Integer.parseInt(inputDriverBreak[1]),inputDriverBreak[2]);
                              
                              queueDriver.add(inputDriverBreak);
+                             g.addVertex(inputDriverBreak[2] +" "+ inputDriverBreak[3]);
                              
                              
                              System.out.println("Driver is successfully registered!");
@@ -373,6 +393,24 @@ public class Main {
         
         
             
+    }
+    public static double calculateDistance(double startingLatitude,double startingLongtitude, double destinationLatitude, double destinationLongtitude){
+        // Calculate the distance between each latitude and longtitude
+        double distLa = Math.toRadians(destinationLatitude - startingLatitude);
+        double distLong = Math.toRadians(destinationLongtitude - startingLongtitude);
+        
+        // Implementing Haversine formula
+        double temp = Math.pow(Math.sin(distLa/2), 2) + Math.cos(Math.toRadians(startingLatitude)) * Math.cos(Math.toRadians(destinationLatitude))
+                      * Math.pow(Math.sin(distLong/2), 2);
+        
+        double result = 2 * Math.asin(Math.sqrt(temp));
+        
+        // Radius of earth in kilometers
+        double radius = 6371;
+        
+        return result * radius;
+        
+        
     }
     
     

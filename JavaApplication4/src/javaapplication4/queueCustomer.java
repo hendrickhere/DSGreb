@@ -25,8 +25,8 @@ public class queueCustomer {
         qTime.enqueue(a[1]);
        
         qCapacity.enqueue(Integer.parseInt(a[2]));
-        qStartingPoint.enqueue(a[3]);
-        qDestination.enqueue(a[4]);
+        qStartingPoint.enqueue(a[3]+ " "+ a[4]);
+        qDestination.enqueue(a[5] + " "+ a[6]);
         addAdditional();
         
     }
@@ -45,7 +45,7 @@ public class queueCustomer {
     
     public void display(){
         for(int i = 0 ; i < qName.getSize() ; i++){
-            System.out.printf("%8s %18s %15s %25d %20s %20s \n",qName.getElement(i), qStatus.getElement(i),qTime.getElement(i), qCapacity.getElement(i), qStartingPoint.getElement(i), qDestination.getElement(i));
+            System.out.printf("%9s %18s %15s %25d %20s %20s \n",qName.getElement(i), qStatus.getElement(i),qTime.getElement(i), qCapacity.getElement(i), qStartingPoint.getElement(i), qDestination.getElement(i));
             
         }
         

@@ -35,7 +35,7 @@ public class queueDriver {
         qName.enqueue(a[0]);  
         
         qCapacity.enqueue(Integer.parseInt(a[1]));
-        qLocation.enqueue(a[2]);
+        qLocation.enqueue(a[2]+ " "+a[3]);
         //qId.enqueue(++sizeId);
         //qReputation.enqueue((double)Math.random()*5);
         addAdditional();
@@ -57,33 +57,34 @@ public class queueDriver {
     
     
     
-    public String arrivalTime(String time, int weightDriverSource, int weightSourceDestination){
+    public String arrivalTime(String time, double weightDriverSource, double weightSourceDestination){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime lt = LocalTime.parse(time);
         
-        int minute = 0;
+        // If 1 km need 1 minutes in real life, then 1 km uses one second in this application
+        int second = 0;
         for(int i = 0 ; i < weightDriverSource ; i++){
-            minute++;
+            second++;
         }
         for(int i = 0 ; i< weightSourceDestination ; i++){
-            minute++;
+            second++;
         }
-        
-        return formatter.format(lt.plusMinutes(minute));
+       
+        return formatter.format(lt.plusMinutes(second));
         
         
     }
     
-    public String pickupTime(String time, int weightDriverSource){
+    public String pickupTime(String time, double weightDriverSource){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime lt = LocalTime.parse(time);
         
-        int minute = 0;
+        int second = 0;
         for(int i = 0 ; i < weightDriverSource ; i++){
-            minute++;
+            second++;
         }
         
-        return formatter.format(lt.plusMinutes(minute));
+        return formatter.format(lt.plusMinutes(second));
         
     }
     
@@ -99,7 +100,7 @@ public class queueDriver {
         
           
         for(int i = 0 ; i < qName.getSize() ; i++){
-           System.out.printf("%9s %20s %13d %18s  %18s \n",qName.getElement(i),qStatus.getElement(i),qCapacity.getElement(i), qLocation.getElement(i),qCustomer.getElement(i));
+           System.out.printf("%8s %20s %12d %22s  %18s \n",qName.getElement(i),qStatus.getElement(i),qCapacity.getElement(i), qLocation.getElement(i),qCustomer.getElement(i));
             
         } 
         
