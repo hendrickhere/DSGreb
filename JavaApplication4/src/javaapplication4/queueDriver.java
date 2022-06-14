@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -24,8 +25,11 @@ public class queueDriver {
     Queue<String> qLocation = new Queue<>();
     Queue<String> qArrivalTime = new Queue<>();
     Queue<String> qPickupTime = new Queue<>();
+    //Queue<ArrayList<Double>> qReputation = new Queue<>();
     Queue<Double> qReputation = new Queue<>();
+            
     Queue<String> qCustomer = new Queue<>();
+    Queue<String> qComment = new Queue<>();
     String[] status = {"not available","available"};
     
     
@@ -37,9 +41,11 @@ public class queueDriver {
         qCapacity.enqueue(Integer.parseInt(a[1]));
         qLocation.enqueue(a[2]+ " "+a[3]);
         //qId.enqueue(++sizeId);
-        //qReputation.enqueue((double)Math.random()*5);
+        
         addAdditional();
         qCustomer.enqueue("-");
+        qArrivalTime.enqueue("");
+        qPickupTime.enqueue("");
         
     }
     
@@ -51,6 +57,8 @@ public class queueDriver {
         qStatus.enqueue(status[1]);
         double rep = (double)Math.random()*5;
         qReputation.enqueue(rep);
+        //qReputation.enqueue(new ArrayList<>());
+        
         
     }
     
@@ -61,7 +69,7 @@ public class queueDriver {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime lt = LocalTime.parse(time);
         
-        // If 1 km need 1 minutes in real life, then 1 km uses one second in this application
+        // Let say if 1 km need 1 minutes in real life
         int second = 0;
         for(int i = 0 ; i < weightDriverSource ; i++){
             second++;
@@ -90,6 +98,7 @@ public class queueDriver {
     
     
     
+    
     public void customer(String customerName, int index){
         qCustomer.set(index, customerName);
         qStatus.set(index, status[0]);
@@ -100,7 +109,7 @@ public class queueDriver {
         
           
         for(int i = 0 ; i < qName.getSize() ; i++){
-           System.out.printf("%8s %20s %12d %22s  %18s \n",qName.getElement(i),qStatus.getElement(i),qCapacity.getElement(i), qLocation.getElement(i),qCustomer.getElement(i));
+           System.out.printf("%8s %20s %12d %25s  %15s \n",qName.getElement(i),qStatus.getElement(i),qCapacity.getElement(i), qLocation.getElement(i),qCustomer.getElement(i));
             
         } 
         
@@ -113,7 +122,7 @@ public class queueDriver {
            if(qStatus.getElement(i).equalsIgnoreCase("not available")){
                continue;
            }
-           System.out.printf("%8s %15s %20s %25.1f  %s  \n",qName.getElement(i),qCapacity.getElement(i), qArrivalTime.getElement(i),qReputation.getElement(i),"/5.0");
+           System.out.printf("%8s %15s %20s %25.1f %s  \n",qName.getElement(i),qCapacity.getElement(i), qArrivalTime.getElement(i),qReputation.getElement(i),"/5.0");
             
         }
          //for(int i = 0 ; i < qName.getSize() ; i++){
