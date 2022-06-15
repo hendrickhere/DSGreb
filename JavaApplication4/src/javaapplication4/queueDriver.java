@@ -19,14 +19,13 @@ import java.util.Date;
 public class queueDriver {
    
     Queue<String> qName = new Queue<>();
-    //Queue<Integer> qId = new Queue<>();
     Queue<String> qStatus = new Queue<>();
     Queue<Integer> qCapacity = new Queue<>();
     Queue<String> qLocation = new Queue<>();
     Queue<String> qArrivalTime = new Queue<>();
     Queue<String> qPickupTime = new Queue<>();
-    //Queue<ArrayList<Double>> qReputation = new Queue<>();
-    Queue<Double> qReputation = new Queue<>();
+    Queue<ArrayList<Double>> qReputation = new Queue<>();
+
             
     Queue<String> qCustomer = new Queue<>();
     Queue<String> qComment = new Queue<>();
@@ -39,13 +38,11 @@ public class queueDriver {
         qName.enqueue(a[0]);  
         
         qCapacity.enqueue(Integer.parseInt(a[1]));
-        qLocation.enqueue(a[2]+ " "+a[3]);
-        //qId.enqueue(++sizeId);
-        
-        addAdditional();
+        qLocation.enqueue(a[2]+ " "+a[3]);      
         qCustomer.enqueue("-");
         qArrivalTime.enqueue("");
         qPickupTime.enqueue("");
+        addAdditional();
         
     }
     
@@ -55,9 +52,7 @@ public class queueDriver {
       
         
         qStatus.enqueue(status[1]);
-        double rep = (double)Math.random()*5;
-        qReputation.enqueue(rep);
-        //qReputation.enqueue(new ArrayList<>());
+        qReputation.enqueue(new ArrayList<>());
         
         
     }
@@ -70,29 +65,30 @@ public class queueDriver {
         LocalTime lt = LocalTime.parse(time);
         
         // Let say if 1 km need 1 minutes in real life
-        int second = 0;
+        int minute = 0;
         for(int i = 0 ; i < weightDriverSource ; i++){
-            second++;
+            minute++;
         }
         for(int i = 0 ; i< weightSourceDestination ; i++){
-            second++;
+            minute++;
         }
        
-        return formatter.format(lt.plusMinutes(second));
+        return formatter.format(lt.plusMinutes(minute));
         
         
     }
     
+    // Calculate the pickup up time 
     public String pickupTime(String time, double weightDriverSource){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime lt = LocalTime.parse(time);
         
-        int second = 0;
+        int minutes = 0;
         for(int i = 0 ; i < weightDriverSource ; i++){
-            second++;
+            minutes++;
         }
         
-        return formatter.format(lt.plusMinutes(second));
+        return formatter.format(lt.plusMinutes(minutes));
         
     }
     
@@ -122,7 +118,7 @@ public class queueDriver {
            if(qStatus.getElement(i).equalsIgnoreCase("not available")){
                continue;
            }
-           System.out.printf("%8s %15s %20s %25.1f %s  \n",qName.getElement(i),qCapacity.getElement(i), qArrivalTime.getElement(i),qReputation.getElement(i),"/5.0");
+           System.out.printf("%8s %15s %20s %25s %s  \n",qName.getElement(i),qCapacity.getElement(i), qArrivalTime.getElement(i),qReputation.getElement(i),"/5.0");
             
         }
          //for(int i = 0 ; i < qName.getSize() ; i++){
@@ -151,12 +147,11 @@ public class queueDriver {
     }
     
     public void delete(String a){
-        //int size = qName.getSize();
+ 
         for(int i = 0 ; i < qName.getSize() ; i++){
             if(a.equalsIgnoreCase(qName.getElement(i))){
          
                 qName.remove(i);
-                //qId.remove(i);
                 qStatus.remove(i);
                 qCapacity.remove(i);
                 qLocation.remove(i);

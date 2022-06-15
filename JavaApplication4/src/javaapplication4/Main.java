@@ -27,8 +27,9 @@ public class Main {
      */
     public static void main(String[] args) throws ParseException {
         
-        Scanner scan2 = new Scanner(System.in);
+        
         Scanner scan = new Scanner(System.in);
+        Scanner scan2 = new Scanner(System.in);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");  
         LocalDateTime current = LocalDateTime.now(); 
         Graph<String,Double> g = new Graph<>();
@@ -39,15 +40,18 @@ public class Main {
         queueDriver queueDriver = new queueDriver();
         HomePage a = new HomePage();
         
+        //initialise the variables needed
         int count = 0;
         boolean result = true;
         String inputCustomer = "";
         String[] inputCustomerBreak = null;
         String inputDriver = "";
+        
+        
         ArrayList listPickedDriver = new ArrayList();
         ArrayList listPickedCustomer = new ArrayList();
         ArrayList listCustomerDest = new ArrayList();
-        ArrayList listRate = new ArrayList();
+        ArrayList listCustomerSource = new ArrayList();
         
 
         
@@ -57,99 +61,33 @@ public class Main {
         
 
         while(result){
+            
+            // Display homepage
             a.display();
             
             
 
             switch(a.input()){
+                
                 case "A":
-                        
-//                        Timer timer = new Timer();
-//                        timer.schedule(new TimerTask() {
-//                        @Override
-//                        public void run() {
-//                           
-//                            if(queueCustomer.qName.getSize()> 0){
-//                                for(int i = 0 ; i< listPickedDriver.size(); i++){
-//                                    //System.out.println("i = " + i);
-//                                    //System.out.println("picked customer : " + listPickedCustomer.get(i));      
-//                                    //System.out.println("picked driver : " + listPickedDriver.get(i));
-//                                    Date date = new Date();
-//                                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-//
-//                                    try {
-//                                        //System.out.println("Arraylist Size : " + queueDriver.qReputation.getElement(i).size());
-//                                        
-//                                        //if the time exceeds the picked up time, change the customer status to picked up
-//                                        if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(queueDriver.qPickupTime.getElement((int)listPickedDriver.get(i))))){
-//                                            if(queueCustomer.qStatus.getElement((int)listPickedCustomer.get(i)).equalsIgnoreCase("reached")){
-//                                                continue;
-//                                            }
-//                                            else{
-//                                                queueCustomer.qStatus.set((int)listPickedCustomer.get(i), "picked up");
-//                                                
-//                                            }
-//                                        }
-//                                    } catch (ParseException ex) {
-//                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//                                    }
-//
-//                                    try {
-//                                        //if the time exceeds the arrival time, change the customer status to arrived
-//                                        if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(queueDriver.qArrivalTime.getElement(((int)listPickedDriver.get(i)))))){
-//                                            if(queueCustomer.qStatus.getElement((int)listPickedCustomer.get(i)).equalsIgnoreCase("reached")){
-//                                                continue;
-//                                            }else{
-//                                                queueCustomer.qStatus.set((int)listPickedCustomer.get(i), "reached");
-//                                                queueDriver.qLocation.set((int)listPickedDriver.get(i), (String)listCustomerDest.get(i));
-//                                                queueDriver.qStatus.set((int)listPickedDriver.get(i), "available");
-//                                                queueDriver.qCustomer.set((int)listPickedDriver.get(i), "-");
-//                                                
-//                                                
-//                                                System.out.println("Driver "+ queueDriver.qName.getElement((int)listPickedDriver.get(i)) + " has reached the destination... ");
-//                                                System.out.println("Please rate driver "+ queueDriver.qName.getElement((int)listPickedDriver.get(i)));
-//                                                System.out.print(">>");
-//                                                int inputRate = scan2.nextInt();
-//                                                queueDriver.qReputation.getElement((int)listPickedDriver.get(i)).add((double)inputRate);
-//                                                
-//                                                calculateRating(queueDriver.qReputation);
-//                                                
-//                                                timer.cancel();
-//                                                
-//                                                
-//                                                
-//                                            }
-//                                            
-//                                            
-//                                        }
-//                                    } catch (ParseException ex) {
-//                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//                                    }
-//
-//                              }
-//                           }
-//                            
-//
-//                        }
-//                        }, 0, 5000);
-                    
-                       
+                           
                             if(queueCustomer.qName.getSize()> 0){
                                 for(int i = 0 ; i< listPickedDriver.size(); i++){
-
+                                    
+                                    
                                     Date date = new Date();
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
-
-                                        
+                                
                                         //if the time exceeds the picked up time, change the customer status to picked up
                                         if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(queueDriver.qPickupTime.getElement((int)listPickedDriver.get(i))))){
                                             if(queueCustomer.qStatus.getElement((int)listPickedCustomer.get(i)).equalsIgnoreCase("reached")){
                                                 continue;
                                             }
                                             else{
+                                                //Change the driver location to the customer source location when customer is picked up from source location
                                                 queueCustomer.qStatus.set((int)listPickedCustomer.get(i), "picked up");
-                                                
+                                                queueDriver.qLocation.set((int)listPickedDriver.get(i), (String)listCustomerSource.get(i));
                                             }
                                         }
                                     
@@ -159,20 +97,47 @@ public class Main {
                                         if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(queueDriver.qArrivalTime.getElement(((int)listPickedDriver.get(i)))))){
                                             if(queueCustomer.qStatus.getElement((int)listPickedCustomer.get(i)).equalsIgnoreCase("reached")){
                                                 continue;
+                                                
                                             }else{
+                                                //Change customer status to reached
                                                 queueCustomer.qStatus.set((int)listPickedCustomer.get(i), "reached");
+                                                
+                                                //Change driver location to the customer destination as the driver has reached the destination
                                                 queueDriver.qLocation.set((int)listPickedDriver.get(i), (String)listCustomerDest.get(i));
+                                                
+                                                //Driver will be availabe again
                                                 queueDriver.qStatus.set((int)listPickedDriver.get(i), "available");
+                                                
+                                                //Driver will have no customer as the previous customer has been dropped off
                                                 queueDriver.qCustomer.set((int)listPickedDriver.get(i), "-");
                                                 
                                                 
-                                                //System.out.println("Driver "+ queueDriver.qName.getElement((int)listPickedDriver.get(i)) + " has reached the destination... ");
-                                                //System.out.println("Please rate driver "+ queueDriver.qName.getElement((int)listPickedDriver.get(i)));
-                                                //System.out.print(">>");
-                                                //int inputRate = scan2.nextInt();
-                                                //queueDriver.qReputation.getElement((int)listPickedDriver.get(i)).add((double)inputRate);
+                                                int inputRate = 0;
+                                                // Prompt user to enter the rating for the driver after the driver reached the destination
+                                                System.out.println("Driver "+ queueDriver.qName.getElement((int)listPickedDriver.get(i)) + " has reached the destination... ");
+                                                System.out.println("Please rate driver "+ queueDriver.qName.getElement((int)listPickedDriver.get(i))+ " (0 - 5)");
+                                                System.out.print(">>");
+                                                inputRate = scan2.nextInt();
                                                 
+                                                // Check if the rating is in between 0-5
+                                                while(true){
+                                                    
+                                                    if(inputRate>= 0 && inputRate<=5){
+                                                        break;
+                                                    }
+                                                    else{
+                                                        System.out.println("Rating invalid");
+                                                        System.out.println("Please rate driver "+ queueDriver.qName.getElement((int)listPickedDriver.get(i))+ " (0 - 5)");
+                                                        System.out.print(">>");
+                                                        inputRate = scan2.nextInt();
+                                                    }
+                                                    
+                                                }
                                                 
+                                                queueDriver.qReputation.getElement((int)listPickedDriver.get(i)).add((double)inputRate);
+                                                
+                                                // Calculate the rating of the driver
+                                                calculateRating(queueDriver.qReputation.getElement((int)listPickedDriver.get(i)));
                                                 
                                                 
                                                 
@@ -181,18 +146,15 @@ public class Main {
                                             }
                                             
                                             
-                                       }
-                                   
+                                        }
+                                    
 
                               }
-                           
-                            
-
-                        }
+                                
+                           }
                         
-                        
-                         
-                        
+                        // System Dashboard
+                       
                         System.out.println("\nSystem Dashboard : ");
                         System.out.println("");
                         System.out.println("Requests Lists (List Last Updated Time : "+ dtf.format(current)+ ")"); 
@@ -211,15 +173,12 @@ public class Main {
                         
                         queueDriver.display();
                         System.out.println("===================================================================================================================================");
-                        
-                        
-                               
-                               
-                
+
                          break;
                          
                          
                 case "B":
+                    
                          Date date = new Date();
                          SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
                            
@@ -231,23 +190,44 @@ public class Main {
                          }
                          else if(choosen.equalsIgnoreCase("a")){
                              
+                             // Create customer request
                              System.out.println("Enter the details of the customer you want to create (name  Expected arrival time  capacity  starting point  destination) \n(Enter "+" exit "+"to go back to homepage)");
-
-                             
-                             
+  
                              System.out.print(">> ");
                              inputCustomer = scan.nextLine();
-                             
+                                   
+                         
                              if(inputCustomer.equalsIgnoreCase("exit")){
                                  break;
                              }
                              
                              inputCustomerBreak = inputCustomer.split(" ");
                              
-
-                             
-                             
                              queueCustomer.add(inputCustomerBreak);
+                             
+//                             // Check if the customer name entered existed or not
+//                             boolean check = true;
+//                             while(check){      
+//                                for(int i = 0 ; i < queueCustomer.qName.getSize(); i ++){
+//                                    if(inputCustomerBreak[0].equalsIgnoreCase(queueCustomer.qName.getElement(i))){
+//                                        System.out.println("Customer name already exists, Please choose the other name: ");
+//                                        System.out.print(">>");
+//                                        inputCustomerBreak[0] = scan.nextLine();
+//                                        queueCustomer.qName.set(i, inputCustomerBreak[0]);
+//                                        
+//                                        break;
+//                                        
+//                                    }
+//                                    else{
+//                                        check = false;
+//                                        break;
+//                                    }
+//                                    
+//                                }
+//                            }
+         
+                            
+                             
                              
                              listPickedCustomer.add(queueCustomer.qName.getIndex(inputCustomerBreak[0]));
                              
@@ -259,13 +239,16 @@ public class Main {
                              double destLa = Double.parseDouble(inputCustomerBreak[5]);
                              double destLong = Double.parseDouble(inputCustomerBreak[6]);
                              
+                             //add Vertex and Edge entered by the customer
                              g.addVertex(starting);
                              g.addVertex(destination);
                              g.addUndirectedEdge(starting, destination, calculateDistance(startingLa,startingLong, destLa, destLong));
+                             //If customer and driver are at the same location, no weight will be added
                              g.addUndirectedEdge(starting, starting, 0.0);
                              g.addUndirectedEdge(destination, destination, 0.0);
                              
                              listCustomerDest.add((String)destination);
+                             listCustomerSource.add((String)starting);
                              
                              //Customer customer = new Customer(inputCustomerBreak[0],inputCustomerBreak[1],Integer.parseInt(inputCustomerBreak[2]),inputCustomerBreak[3],inputCustomerBreak[4]);
                              String timeNow = dateFormat.format(date);
@@ -279,20 +262,24 @@ public class Main {
 
 
                                 for(int i = 0 ; i < queueDriver.qName.getSize() ; i++){
+                                       
+                                       if(queueDriver.qStatus.getElement(i).equalsIgnoreCase("not available")){
+                                           continue;
+                                       }
+                                    
                                        double weightDriverToSource = g.getEdgeWeight(queueDriver.qLocation.getElement(i), starting) ;
 
                                        double weightSourceToLocation =  g.getEdgeWeight(starting, destination);
-
-
-                                       //queueDriver.qArrivalTime.enqueue(queueDriver.arrivalTime(timeNow,weightDriverToSource, weightSourceToLocation));
+                                       
+                                       //Store the arrival time and the pickup time
                                        queueDriver.qArrivalTime.set(i, queueDriver.arrivalTime(timeNow, weightDriverToSource, weightSourceToLocation));
-                                       //queueDriver.qPickupTime.enqueue(queueDriver.pickupTime(timeNow, weightDriverToSource));
+
                                        queueDriver.qPickupTime.set(i, queueDriver.pickupTime(timeNow, weightDriverToSource));
                                        
                                 }
                   
                                                          
-                             //while(true){
+                             
                                  
                                  System.out.println("The request is received, please choose your driver available in your location) ... ");
                                  
@@ -305,13 +292,12 @@ public class Main {
                                  inputDriver = scan.nextLine();
                                  
                                  if(inputDriver.equalsIgnoreCase("exit")){
-                                     //queueDriver.qArrivalTime.dequeue();
-                                     //queueDriver.qPickupTime.dequeue();
                                      break;
                                  }
                                  
-                                 
+                                 // Get the index of the selected driver
                                  int index = queueDriver.qName.getIndex(inputDriver);
+                                 
                                  
                                  // Check if the capacity of the driver is smaller than capacity of customer
                                  if(queueDriver.qCapacity.getElement(index) < Integer.parseInt(inputCustomerBreak[2])){
@@ -330,44 +316,24 @@ public class Main {
                                  }
                                  
                                  else{
-                                    System.out.println("Driver "+ inputDriver + " is on the way to pick you up");                   
-                                     
-                                 
-                                 
-//                                    Timer timer = new Timer();
-//                                    timer.schedule(new TimerTask() {
-//                                    @Override
-//                                    public void run() {
-//                                        System.out.println("Driver Availability : ");
-//
-//                                        System.out.println("\n");
-//                                        System.out.println("Drivers Lists (List Last Updated Time : "+ dtf.format(current)+ ")"); 
-//                                        System.out.println("(current time : "+ a.getTime()+ ")");
-//                                        System.out.println("===================================================================================================================================");
-//                                        System.out.printf("%10s %15s %20s %20s \n", "Driver","Capacity","Estimated Arrival Time","Reputation");
-//
-//                                        queueDriver.displayDriverAva();
-//
-//                                        System.out.println("===================================================================================================================================");
-//
-//
-//
-//                                    }
-//                                    }, 0, 50000);
+                                    System.out.println("Driver "+ inputDriver + " is on the way to pick you up");   
+                                    
+                                    //Change the customer status to waiting
                                     queueCustomer.changeStatus(inputCustomerBreak[0], "waiting");
+                                    
                                     count++;
                                     break;
                                     }
-                                 //break;
-                             //}
+
                        
                              
                             
                          
-                             
+                         
                          }
                          else if(choosen.equalsIgnoreCase("b")){
                              System.out.println("Pleasae Enter Aspect that need to update: ");
+                             
                              System.out.println("Name                 : n "
                                              +"\nExpected Arriva Time : e "
                                              +"\nCapacity             : c" 
@@ -414,12 +380,10 @@ public class Main {
                              System.out.println("Enter the details of the driver you want to create (name, capacity, location) : ");
                              String inputDriver1 = scan.nextLine();
                              String[] inputDriverBreak = inputDriver1.split(" ");
-                             //if(!(g.hasVertex(inputDriverBreak[2]))){
-                                 //System.out.println("Location unavailable");
-                                 //break;
-                             //}
+ 
                              //Driver driver = new Driver(inputDriverBreak[0],Integer.parseInt(inputDriverBreak[1]),inputDriverBreak[2]);
                              
+                             // add driver into the queue
                              queueDriver.add(inputDriverBreak);
                              g.addVertex(inputDriverBreak[2] +" "+ inputDriverBreak[3]);
                              
@@ -447,7 +411,7 @@ public class Main {
                             }
                             
                             
-                            
+                            // Delete selected driver
                             queueDriver.delete(deleteDriver);
                             
                             System.out.println("\n");
@@ -488,29 +452,33 @@ public class Main {
         // Radius of earth in kilometers
         double radius = 6371;
         
+        // Return the result in km which will be used to add weight to the edge
         return result * radius;
         
         
     }
     
-//    public static void calculateRating(Queue<ArrayList<Double>> q){
-//        for(int i = 0 ; i < q.getSize(); i ++){
-//            double total = 0;
-//            double average = 0;
-//            for(int y = 0 ; y < q.getElement(i).size() ; y++){
-//                total += (double)q.getElement(i).get(y);
-//            }
-//            ArrayList list = new ArrayList();
-//            if(total == 0){
-//                average = total;
-//            }else{
-//                average = total/q.getElement(i).size();
-//            }
-//            
-//            list.add((double)average);
-//            q.set(i, list);
-//        }
-//    }
+    public static void calculateRating(ArrayList<Double> q){
+        // Calculate the average rating of the driver
+        
+            double total = 0;
+            double average = 0;
+
+            for(int y = 0 ; y < q.size() ; y++){
+                total += (double)q.get(y);
+            }
+            ArrayList<Double> list = new ArrayList();
+            if(total == 0){
+                average = total;
+            }else{
+                average = total/(q.size());
+            }
+            
+            list.add((double)average);
+            q.clear();
+            q.add(list.get(0));
+        
+    }
     
     
  
