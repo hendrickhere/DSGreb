@@ -17,7 +17,8 @@ import java.util.Date;
  * @author hongjun
  */
 public class queueDriver {
-   
+    
+    //Create variable needed in a driver
     Queue<String> qName = new Queue<>();
     Queue<String> qStatus = new Queue<>();
     Queue<Integer> qCapacity = new Queue<>();
@@ -25,18 +26,16 @@ public class queueDriver {
     Queue<String> qArrivalTime = new Queue<>();
     Queue<String> qPickupTime = new Queue<>();
     Queue<ArrayList<Double>> qReputation = new Queue<>();
-
-            
     Queue<String> qCustomer = new Queue<>();
     Queue<String> qComment = new Queue<>();
+    
+    
     String[] status = {"not available","available"};
     
     
-    
+    //Create driver if driver is entered
     public void add(String[] a){
-        
         qName.enqueue(a[0]);  
-        
         qCapacity.enqueue(Integer.parseInt(a[1]));
         qLocation.enqueue(a[2]+ " "+a[3]);      
         qCustomer.enqueue("-");
@@ -45,21 +44,16 @@ public class queueDriver {
         addAdditional();
         
     }
-    
-    
-    
+     
     public void addAdditional(){
-      
-        
         qStatus.enqueue(status[1]);
         qReputation.enqueue(new ArrayList<>());
-        
-        
+     
     }
     
     
     
-    
+    // Calculate the arrival time of the customer to the destination
     public String arrivalTime(String time, double weightDriverSource, double weightSourceDestination){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime lt = LocalTime.parse(time);
@@ -78,7 +72,7 @@ public class queueDriver {
         
     }
     
-    // Calculate the pickup up time 
+    // Calculate the pickup up time for the driver to pick up the driver
     public String pickupTime(String time, double weightDriverSource){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime lt = LocalTime.parse(time);
@@ -94,40 +88,35 @@ public class queueDriver {
     
     
     
-    
+    //Update the customer in the driver if the driver is responsible for the customer
     public void customer(String customerName, int index){
         qCustomer.set(index, customerName);
         qStatus.set(index, status[0]);
     }
      
     
-    public void display(){
-        
-          
+    // Display the name status capacity location and customer of driver
+    public void display(){      
         for(int i = 0 ; i < qName.getSize() ; i++){
-           System.out.printf("%8s %20s %12d %25s  %15s \n",qName.getElement(i),qStatus.getElement(i),qCapacity.getElement(i), qLocation.getElement(i),qCustomer.getElement(i));
-            
+           System.out.printf("%8s %20s %12d %25s  %15s \n",qName.getElement(i),qStatus.getElement(i),qCapacity.getElement(i), qLocation.getElement(i),qCustomer.getElement(i));           
         } 
         
     }
     
-    
-    public void displayDriverAva(){
-     
+    // Display the driver availability for the customer
+    public void displayDriverAva(){    
         for(int i = 0 ; i < qName.getSize() ; i++){
+            // If the driver is not available, need not display
            if(qStatus.getElement(i).equalsIgnoreCase("not available")){
                continue;
            }
            System.out.printf("%8s %15s %20s %25s %s  \n",qName.getElement(i),qCapacity.getElement(i), qArrivalTime.getElement(i),qReputation.getElement(i),"/5.0");
             
         }
-         //for(int i = 0 ; i < qName.getSize() ; i++){
-           //System.out.printf("%8s %18s %15d %25s  %15s \n",qName.getElement(i),"status ",qCapacity.getElement(i), qLocation.getElement(i),"Customer");
-            
-        //} 
         
     }
     
+    //Disaply the driver availability 
     public void displayDriver(LocalDateTime current){
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
@@ -146,8 +135,8 @@ public class queueDriver {
 
     }
     
+    // Delete driver
     public void delete(String a){
- 
         for(int i = 0 ; i < qName.getSize() ; i++){
             if(a.equalsIgnoreCase(qName.getElement(i))){
          
